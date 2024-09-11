@@ -37,8 +37,20 @@ app.get('/pokemon/:identifier', function (request: Request, response: Response) 
     fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}`)
         .then(res => res.json())
         .then(pokemon => {
-            response.render("index", { pokemon, error: null });
-        })
+            const abilities = pokemon.abilities
+                .map((ability: any) => ability.ability.name)
+                .join(', ');
+
+            response.render("index", {
+                pokemon: {
+                    name: pokemon.name,
+                    id: pokemon.id,
+                    sprites: pokemon.sprites,
+                    abilities: abilities
+                },
+                error: null
+            });
+        })  
         .catch(error => {
             console.error("Erro ao buscar Pokémon:", error);
             response.render("index", { pokemon: null, error: "Pokémon não encontrado." });
