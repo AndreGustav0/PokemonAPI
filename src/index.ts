@@ -35,26 +35,38 @@ app.get('/pokemon/:identifier', function (request: Request, response: Response) 
     const identifier = request.params.identifier;
 
     fetch(`https://pokeapi.co/api/v2/pokemon/${identifier}`)
-        .then(res => res.json())
-        .then(pokemon => {
-            const abilities = pokemon.abilities
-                .map((ability: any) => ability.ability.name)
-                .join(', ');
+    .then(res => res.json())
+    .then(pokemon => {
+        const abilities = pokemon.abilities
+            .map((ability: any) => ability.ability.name)
+            .join(', ');
+        
+        const types = pokemon.types
+            .map((typeInfo: any) => typeInfo.type.name)
+            .join(', ')
 
-            response.render("index", {
-                pokemon: {
-                    name: pokemon.name,
-                    id: pokemon.id,
-                    sprites: pokemon.sprites,
-                    abilities: abilities
-                },
-                error: null
-            });
-        })  
-        .catch(error => {
-            console.error("Erro ao buscar Pokémon:", error);
-            response.render("index", { pokemon: null, error: "Pokémon não encontrado." });
+        const heightCm = pokemon.height * 10
+        const weightG = pokemon.weight * 100
+
+        console.log('Pokemon Data:', pokemon);    
+        response.render("index", {
+            pokemon: {
+                name: pokemon.name,
+                id: pokemon.id,
+                sprites: pokemon.sprites,
+                abilities: abilities,
+                height: heightCm,
+                weight: weightG,
+                types: types
+            },
+            error: null
         });
+    })
+    .catch(error => {
+        console.error("Erro ao buscar Pokémon:", error);
+        response.render("index", { pokemon: null, error: "Pokémon não encontrado." });
+    });
+    
 });
 
 app.listen(3000, function () {
