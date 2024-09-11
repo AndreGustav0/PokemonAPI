@@ -5,12 +5,12 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, "/views"));
 
-// Rota para a página inicial
+// Tela inicial
 app.get('/', function (request: Request, response: Response) {
     response.render("index", { pokemon: null, error: null });
 });
 
-// Rota para buscar por ID e redirecionar para a página do Pokémon
+// Redirecioanr -> por ID
 app.get('/pokemon/id', function (request: Request, response: Response) {
     const pokemonId = request.query.id as string;
     if (pokemonId) {
@@ -20,7 +20,7 @@ app.get('/pokemon/id', function (request: Request, response: Response) {
     }
 });
 
-// Rota para buscar por Nome e redirecionar para a página do Pokémon
+// Redirecioanr -> por Nome
 app.get('/pokemon/nome', function (request: Request, response: Response) {
     const pokemonName = request.query.nome as string;
     if (pokemonName) {
@@ -30,7 +30,7 @@ app.get('/pokemon/nome', function (request: Request, response: Response) {
     }
 });
 
-// Rota para mostrar informações do Pokémon baseado na URL
+// Para mostrar informações do Pokémon baseado na URL
 app.get('/pokemon/:identifier', function (request: Request, response: Response) {
     const identifier = request.params.identifier;
 
